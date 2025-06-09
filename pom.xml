@@ -6,14 +6,11 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.5.0</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
-    <groupId>com.example</groupId>
-    <artifactId>clinica</artifactId>
+        <relativePath/> </parent>
+    <groupId>com.clinica</groupId> <artifactId>clinica</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>clinica</name>
-    <description>clinica</description>
-    <url/>
+    <description>Projeto de Clínica para Banco de Dados</description> <url/>
     <licenses>
         <license/>
     </licenses>
@@ -34,6 +31,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId> </dependency>
 
         <dependency>
             <groupId>com.mysql</groupId>

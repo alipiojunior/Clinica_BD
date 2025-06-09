@@ -1,3 +1,4 @@
+// src/main/java/com/clinica/service/TutorService.java
 package com.clinica.service;
 
 import com.clinica.dao.TutorDAO;
@@ -18,12 +19,16 @@ public class TutorService {
     }
 
     public void createTutor(Tutor tutor) {
-        // Você pode adicionar lógica de validação aqui antes de salvar
         tutorDAO.create(tutor);
     }
 
     public void deleteTutor(int id) {
         tutorDAO.delete(id);
+    }
+
+    // NOVO MÉTODO: Obter Tutor por ID
+    public Tutor getTutorById(int id) {
+        return tutorDAO.findById(id);
     }
 
     public List<Tutor> getAllTutors() {

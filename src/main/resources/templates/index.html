@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clínica - Escolha de Perfil</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+            flex-direction: column;
+        }
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .profile-button {
+            display: inline-block;
+            margin: 15px;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none; /* Para remover sublinhado de links */
+            transition: background-color 0.3s ease;
+        }
+        .profile-button:hover {
+            background-color: #0056b3;
+        }
+        .admin-button {
+            background-color: #28a745; /* Verde */
+        }
+        .admin-button:hover {
+            background-color: #218838;
+        }
+        .user-button {
+            background-color: #007bff; /* Azul */
+        }
+        .user-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Quem é você?</h1>
+    <div>
+        <a href="/admin-panel" class="profile-button admin-button">Administrador</a>
+        <a href="/user-panel" class="profile-button user-button">Usuário</a>
+    </div>
+</div>
+</body>
+</html>

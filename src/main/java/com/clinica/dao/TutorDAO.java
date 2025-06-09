@@ -1,3 +1,4 @@
+// src/main/java/com/clinica/dao/TutorDAO.java
 package com.clinica.dao;
 
 import com.clinica.config.DatabaseConnection;
@@ -41,6 +42,29 @@ public class TutorDAO {
             System.err.println("Erro ao deletar tutor: " + e.getMessage());
             throw new RuntimeException("Erro ao deletar tutor", e);
         }
+    }
+
+    // NOVO MÉTODO: Encontrar Tutor por ID
+    public Tutor findById(int id) {
+        String sql = "SELECT id_tutor, nome, cpf, email FROM tutor WHERE id_tutor = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Tutor tutor = new Tutor();
+                    tutor.setIdTutor(rs.getInt("id_tutor"));
+                    tutor.setNome(rs.getString("nome"));
+                    tutor.setCpf(rs.getString("cpf"));
+                    tutor.setEmail(rs.getString("email"));
+                    return tutor;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar tutor por ID: " + e.getMessage());
+            throw new RuntimeException("Erro ao buscar tutor por ID", e);
+        }
+        return null; // Retorna null se não encontrar
     }
 
     public List<Tutor> findAll() {

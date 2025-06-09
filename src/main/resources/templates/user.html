@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clínica - Painel do Usuário</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos globais e reset */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            background-color: #f4f7f6;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 40px 0;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 1200px; /* Maior para o painel do usuário */
+            box-sizing: border-box;
+        }
+
+        h1, h2 {
+            color: #1a202c;
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 700;
+            font-size: 2.2em;
+        }
+        h2 {
+            color: #2d3748;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-size: 1.6em;
+            border-bottom: 2px solid #edf2f7;
+            padding-bottom: 10px;
+            text-align: left; /* Alinhar h2 à esquerda */
+        }
+
+        /* Estilo da Tabela */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 25px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        th, td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.95em; /* Ajuste para caber mais conteúdo */
+        }
+
+        th {
+            background-color: #4a5568;
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9em;
+        }
+
+        th:first-child { border-top-left-radius: 8px; }
+        th:last-child { border-top-right-radius: 8px; }
+
+        tr:nth-child(even) {
+            background-color: #f7fafc;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Estilo dos formulários */
+        form {
+            margin-top: 25px;
+            padding: 25px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #4a5568;
+        }
+        form input[type="text"],
+        form input[type="email"],
+        form input[type="number"],
+        form input[type="date"] { /* Adicionado input[type="date"] */
+            width: calc(100% - 20px);
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        form button {
+            background-color: #48bb78;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-right: 10px; /* Espaço entre botões */
+        }
+        form button.delete-button {
+            background-color: #ef4444;
+        }
+        form button.update-button { /* Botão para Update */
+            background-color: #3182ce; /* Azul para atualizar */
+        }
+        form button.read-button { /* Botão para Read */
+            background-color: #f6ad55; /* Laranja para buscar */
+        }
+        form button:hover {
+            background-color: #38a169;
+            transform: translateY(-2px);
+        }
+        form button.delete-button:hover {
+            background-color: #dc2626;
+        }
+        form button.update-button:hover {
+            background-color: #2b6cb0;
+        }
+        form button.read-button:hover {
+            background-color: #dd6b20;
+        }
+
+
+        .back-button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: #a0aec0;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+            font-weight: 500;
+        }
+        .back-button:hover {
+            background-color: #718096;
+        }
+
+        /* Mensagens de Sucesso/Erro */
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1em;
+            text-align: center;
+        }
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .message.info { /* Para mensagens de "encontrado" */
+            background-color: #cfe2ff;
+            color: #052c65;
+            border: 1px solid #b6d4fe;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #e2e8f0;
+            margin: 40px 0;
+        }
+
+        /* Layout de colunas para formulários (opcional, para visual melhor) */
+        .form-row {
+            display: flex;
+            gap: 20px; /* Espaçamento entre os elementos do formulário */
+            flex-wrap: wrap; /* Permite quebrar linha em telas menores */
+        }
+        .form-column {
+            flex: 1; /* Ocupa o espaço disponível */
+            min-width: 280px; /* Largura mínima para evitar quebras muito pequenas */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Painel do Usuário</h1>
+
+    <div th:if="${message}" th:classappend="${'success' == messageType ? 'success' : ('error' == messageType ? 'error' : 'info')}" class="message">
+        <p th:text="${message}"></p>
+    </div>
+
+    <div th:if="${animalEncontrado != null}" class="message info">
+        <p>Animal Encontrado: ID: <span th:text="${animalEncontrado.idAnimal}"></span>, Nome: <span th:text="${animalEncontrado.nome}"></span>, Espécie: <span th:text="${animalEncontrado.especie}"></span>, Raça: <span th:text="${animalEncontrado.raca}"></span>, Tutor ID: <span th:text="${animalEncontrado.idTutor}"></span></p>
+    </div>
+
+    <div th:if="${consultaEncontrada != null}" class="message info">
+        <p>Consulta Encontrada: ID: <span th:text="${consultaEncontrada.idConsulta}"></span>, Animal ID: <span th:text="${consultaEncontrada.idAnimal}"></span>, Data: <span th:text="${consultaEncontrada.dataHora}"></span>, Veterinário: <span th:text="${consultaEncontrada.veterinario}"></span>, Diagnóstico: <span th:text="${consultaEncontrada.diagnostico}"></span></p>
+    </div>
+
+
+    <h2>Gerenciar Animais</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>ID Tutor</th>
+            <th>Nome</th>
+            <th>Espécie</th>
+            <th>Raça</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="animal : ${animais}">
+            <td th:text="${animal.idAnimal}"></td>
+            <td th:text="${animal.idTutor}"></td>
+            <td th:text="${animal.nome}"></td>
+            <td th:text="${animal.especie}"></td>
+            <td th:text="${animal.raca}"></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(animais)}">
+            <td colspan="5">Nenhum animal cadastrado.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <h3>Criar Novo Animal</h3>
+    <form action="/user-panel/animals" method="post">
+        <label for="animalNome">Nome:</label>
+        <input type="text" id="animalNome" name="nome" required><br>
+        <label for="animalEspecie">Espécie:</label>
+        <input type="text" id="animalEspecie" name="especie" required><br>
+        <label for="animalRaca">Raça:</label>
+        <input type="text" id="animalRaca" name="raca" required><br>
+        <label for="animalIdTutor">ID do Tutor (para associar):</label>
+        <input type="number" id="animalIdTutor" name="idTutor" required><br>
+        <button type="submit">Criar Animal</button>
+    </form>
+
+    <h3>Buscar Animal por ID</h3>
+    <form action="/user-panel/animals/search" method="get">
+        <label for="searchAnimalId">ID do Animal:</label>
+        <input type="number" id="searchAnimalId" name="id" required><br>
+        <button type="submit" class="read-button">Buscar Animal</button>
+    </form>
+
+    <h3>Deletar Animal</h3>
+    <form action="/user-panel/animals/delete" method="post">
+        <label for="deleteAnimalId">ID do Animal a Deletar:</label>
+        <input type="number" id="deleteAnimalId" name="id" required><br>
+        <button type="submit" class="delete-button">Deletar Animal</button>
+    </form>
+
+    <hr>
+
+    <h2>Gerenciar Consultas</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>ID Consulta</th>
+            <th>ID Animal</th>
+            <th>Data</th>
+            <th>Veterinário</th>
+            <th>Diagnóstico</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="consulta : ${consultas}">
+            <td th:text="${consulta.idConsulta}"></td>
+            <td th:text="${consulta.idAnimal}"></td>
+            <td th:text="${consulta.dataHora}"></td>
+            <td th:text="${consulta.veterinario}"></td>
+            <td th:text="${consulta.diagnostico}"></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(consultas)}">
+            <td colspan="5">Nenhuma consulta agendada.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <h3>Criar Nova Consulta</h3>
+    <form action="/user-panel/consultas" method="post">
+        <label for="consultaIdAnimal">ID do Animal (para associar):</label>
+        <input type="number" id="consultaIdAnimal" name="idAnimal" required><br>
+        <label for="consultaDataHora">Data (AAAA-MM-DD):</label>
+        <input type="date" id="consultaDataHora" name="dataHora" required><br>
+        <label for="consultaVeterinario">Veterinário:</label>
+        <input type="text" id="consultaVeterinario" name="veterinario" required><br>
+        <label for="consultaDiagnostico">Diagnóstico:</label>
+        <input type="text" id="consultaDiagnostico" name="diagnostico" required><br>
+        <button type="submit">Criar Consulta</button>
+    </form>
+
+    <h3>Atualizar Consulta Existente</h3>
+    <form action="/user-panel/consultas/update" method="post">
+        <label for="updateConsultaId">ID da Consulta a Atualizar:</label>
+        <input type="number" id="updateConsultaId" name="idConsulta" required><br>
+        <label for="updateConsultaIdAnimal">Novo ID do Animal (opcional):</label>
+        <input type="number" id="updateConsultaIdAnimal" name="idAnimal"><br>
+        <label for="updateConsultaDataHora">Nova Data (AAAA-MM-DD) (opcional):</label>
+        <input type="date" id="updateConsultaDataHora" name="dataHora"><br>
+        <label for="updateConsultaVeterinario">Novo Veterinário (opcional):</label>
+        <input type="text" id="updateConsultaVeterinario" name="veterinario"><br>
+        <label for="updateConsultaDiagnostico">Novo Diagnóstico (opcional):</label>
+        <input type="text" id="updateConsultaDiagnostico" name="diagnostico"><br>
+        <button type="submit" class="update-button">Atualizar Consulta</button>
+    </form>
+
+    <h3>Buscar Consulta por ID</h3>
+    <form action="/user-panel/consultas/search" method="get">
+        <label for="searchConsultaId">ID da Consulta:</label>
+        <input type="number" id="searchConsultaId" name="id" required><br>
+        <button type="submit" class="read-button">Buscar Consulta</button>
+    </form>
+
+    <h3>Deletar Consulta</h3>
+    <form action="/user-panel/consultas/delete" method="post">
+        <label for="deleteConsultaId">ID da Consulta a Deletar:</label>
+        <input type="number" id="deleteConsultaId" name="id" required><br>
+        <button type="submit" class="delete-button">Deletar Consulta</button>
+    </form>
+
+    <a href="/" class="back-button">Voltar para a Escolha de Perfil</a>
+</div>
+</body>
+</html>
