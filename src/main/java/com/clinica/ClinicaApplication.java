@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan; // <--- ADICIONE ESTE IMPORT
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
-// <--- ADICIONE ESTA LINHA
 public class ClinicaApplication {
 
     public static void main(String[] args) {

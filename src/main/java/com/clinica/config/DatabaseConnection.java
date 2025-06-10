@@ -6,9 +6,14 @@ import java.sql.SQLException;
 
 public class DatabaseConnection {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/clinica";
+    private static final String URL = "jdbc:mysql://localhost:3306/NomeBanco"; // Substitua NomeBanco pelo seu banco de dados
+    private static final String USER = "root"; // Substitua pelo seu usuário do banco de dados
+    private static final String PASSWORD = "sua_senha"; // Substitua pela sua senha do banco de dados
+
+    /*private static final String URL = "jdbc:mysql://localhost:3306/clinica";
     private static final String USER = "root"; // Substitua pelo seu usuário do banco de dados
     private static final String PASSWORD = "zack22507"; // Substitua pela sua senha do banco de dados
+    */
 
     public static Connection getConnection() throws SQLException {
         try {
